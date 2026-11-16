@@ -24,6 +24,15 @@ export function LoadingScreen() {
     return () => cancelAnimationFrame(frame);
   }, []);
 
+  // Escape skips the intro, like the button.
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && document.documentElement.dataset.intro === "play") skip();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [skip]);
+
   const percent = Math.round(shown);
   const showSkip = (mode === "intro" || mode === "pending") && !revealed;
 
@@ -35,14 +44,14 @@ export function LoadingScreen() {
         aria-live="polite"
         aria-hidden={loaderOut}
       >
-        <span className="wordmark w-36 md:w-44" role="img" aria-label="Milk" />
-        <div className="h-px w-36 overflow-hidden bg-milk/15 md:w-44">
-          <div
-            className="h-full origin-left bg-sign"
-            style={{ transform: `scaleX(${percent / 100})`, transition: "transform 0.2s linear" }}
+        <div className="relative w-44 md:w-56" role="img" aria-label="Milk">
+          <span className="wordmark w-full text-milk/15" />
+          <span
+            className="wordmark absolute inset-0 w-full text-sign"
+            style={{ clipPath: `inset(${100 - percent}% 0 0 0)`, transition: "clip-path 0.25s linear" }}
           />
         </div>
-        <p className="text-sm tabular-nums text-milk/60">
+        <p className="text-xs tabular-nums tracking-wide text-milk/45">
           <span className="sr-only">Loading </span>
           {percent}%
         </p>

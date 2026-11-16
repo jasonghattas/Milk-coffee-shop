@@ -18,7 +18,7 @@ export const photos = {
     src: "/photos/lounge.webp",
     alt: "An armchair and a woven stool beside the blue-framed patterned window",
     caption: "The corner by the window",
-    width: 640,
+    width: 592,
     height: 782,
   },
   icedLatte: {

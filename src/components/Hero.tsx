@@ -4,8 +4,8 @@ import dynamic from "next/dynamic";
 import { Component, useEffect, useRef, useState, type ReactNode } from "react";
 import { MapPin, Star } from "lucide-react";
 import { useExperience } from "./Experience";
-import { Logo } from "./Logo";
 import { rating, site } from "@/data/site";
+import { photos } from "@/data/gallery";
 import { prefersReducedMotion } from "@/lib/intro";
 
 // The 3D scene is the heaviest part of the site, so it loads on its own,
@@ -37,7 +37,28 @@ export function Hero() {
 
   return (
     <section ref={section} id="top" className="relative isolate h-[100svh] min-h-[620px] overflow-hidden bg-ink text-milk">
-      <div className="absolute inset-0 -z-10">
+      {/* Layer 1: the shop sign at night, the one photograph that says where you are. */}
+      <figure
+        className="intro-hide hero-photo absolute inset-x-6 bottom-6 z-0 h-[33svh] md:inset-x-10 md:h-[42svh] md:landscape:inset-x-auto md:landscape:bottom-auto md:landscape:right-10 md:landscape:top-[47%] md:landscape:h-auto md:landscape:w-[41vw] md:landscape:max-w-[620px] md:landscape:-translate-y-1/2 xl:landscape:right-[max(2.5rem,calc((100vw-1240px)/2+2.5rem))]"
+        style={{ "--d": "0.1s" } as React.CSSProperties}
+      >
+        <div className="h-full overflow-hidden rounded-[var(--radius-media)] md:landscape:aspect-[4/3]">
+          <img
+            src={photos.storefront.src}
+            alt={photos.storefront.alt}
+            width={photos.storefront.width}
+            height={photos.storefront.height}
+            decoding="async"
+            className="hero-photo-img h-full w-full object-cover object-[50%_30%]"
+          />
+        </div>
+        <figcaption className="absolute -bottom-7 right-0 hidden text-sm text-milk/50 md:landscape:block">
+          The sign over the door, {site.address.split(",")[0]}
+        </figcaption>
+      </figure>
+
+      {/* Layer 2: the 3D cup, which stands in front of the photograph. */}
+      <div className="pointer-events-none absolute inset-0 z-10">
         {with3D && (
           <SceneBoundary onError={fail}>
             <IntroCanvas
@@ -54,22 +75,26 @@ export function Hero() {
             />
           </SceneBoundary>
         )}
-        {mode === "fallback" && <FlatSign />}
       </div>
 
-      <div className="shell flex h-full flex-col justify-start pt-[15svh] md:landscape:justify-center md:landscape:pt-0">
-        <div className="max-w-[34rem] md:landscape:w-1/2">
-          <p className="intro-hide font-display text-lg text-milk/70 md:text-xl" style={{ "--d": "0.05s" } as React.CSSProperties}>
+      {/* Layer 3: the words. */}
+      <div className="shell relative z-20 flex h-full flex-col justify-start pt-[13svh] md:landscape:justify-center md:landscape:pb-10 md:landscape:pt-0">
+        <div className="max-w-[36rem] md:landscape:w-[46%]">
+          <p
+            className="intro-hide flex items-center gap-3 font-display text-lg text-milk/70 md:text-xl"
+            style={{ "--d": "0.05s" } as React.CSSProperties}
+          >
+            <span className="h-px w-8 bg-sign" aria-hidden />
             {site.name}
           </p>
           <h1
-            className="intro-hide mt-3 text-[clamp(2.6rem,10.5vw,3.4rem)] lowercase md:mt-4 md:text-[clamp(3.4rem,6.2vw,5.75rem)]"
+            className="intro-hide mt-4 text-[clamp(2.7rem,11vw,3.6rem)] lowercase leading-[0.98] md:mt-5 md:text-[clamp(3.5rem,6.4vw,6.25rem)]"
             style={{ "--d": "0.15s" } as React.CSSProperties}
           >
             {site.headline}
           </h1>
           <p
-            className="intro-hide mt-5 max-w-[26rem] text-base text-milk/75 md:mt-7 md:text-lg"
+            className="intro-hide mt-5 max-w-[25rem] text-base text-milk/75 md:mt-7 md:text-lg"
             style={{ "--d": "0.3s" } as React.CSSProperties}
           >
             {site.description}
@@ -82,7 +107,7 @@ export function Hero() {
       </div>
 
       <div
-        className="intro-hide absolute inset-x-0 bottom-0 hidden md:landscape:block"
+        className="intro-hide absolute inset-x-0 bottom-0 z-20 hidden md:landscape:block"
         style={{ "--d": "0.6s" } as React.CSSProperties}
       >
         <div className="shell flex items-center gap-10 border-t border-milk/10 py-5 text-sm text-milk/65">
@@ -96,19 +121,6 @@ export function Hero() {
         </div>
       </div>
     </section>
-  );
-}
-
-/** Hero visual when WebGL is not available: the wordmark, backlit like the shop sign. */
-function FlatSign() {
-  return (
-    <div className="absolute inset-x-0 bottom-[12%] flex justify-center md:inset-y-0 md:bottom-auto md:left-1/2 md:items-center" aria-hidden>
-      <div className="relative w-[58%] max-w-[420px]">
-        <span className="wordmark absolute inset-0 scale-105 text-sign opacity-90 blur-xl" />
-        <span className="wordmark absolute inset-0 text-sign blur-[3px]" />
-        <Logo className="relative text-ink" />
-      </div>
-    </div>
   );
 }
 

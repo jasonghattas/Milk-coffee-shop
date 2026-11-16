@@ -9,6 +9,22 @@ import { nav } from "@/data/site";
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [current, setCurrent] = useState("#top");
+
+  // Mark the link of the section that currently holds the middle of the screen.
+  useEffect(() => {
+    const sections = nav
+      .map((item) => document.querySelector<HTMLElement>(item.href))
+      .filter((node): node is HTMLElement => node !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) if (entry.isIntersecting) setCurrent(`#${entry.target.id}`);
+      },
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -48,8 +64,20 @@ export function Navbar() {
         <ul className="hidden items-center gap-9 text-[0.95rem] lg:flex">
           {nav.map((item) => (
             <li key={item.href}>
-              <a href={item.href} className="text-milk/75 transition-colors hover:text-milk">
+              <a
+                href={item.href}
+                aria-current={current === item.href ? "true" : undefined}
+                className={`relative py-2 transition-colors duration-300 hover:text-milk ${
+                  current === item.href ? "text-milk" : "text-milk/65"
+                }`}
+              >
                 {item.label}
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-sign transition-transform duration-500 ease-[var(--ease-out-soft)] ${
+                    current === item.href ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
               </a>
             </li>
           ))}

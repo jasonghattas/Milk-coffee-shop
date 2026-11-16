@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Photo } from "./Photo";
 import { Reveal } from "./Reveal";
+import { Daisy } from "./Daisy";
 import { photos } from "@/data/gallery";
 
 const notes = [
@@ -50,12 +51,13 @@ export function About() {
     <section ref={root} id="about" className="overflow-hidden bg-milk pb-28 pt-20 md:pb-40 md:pt-32">
       <div className="shell grid gap-20 md:grid-cols-12 md:gap-8">
         <div className="relative md:col-span-6 md:self-start lg:col-span-5">
+          <Daisy className="pointer-events-none absolute -left-10 -top-12 z-10 w-28 -rotate-12 text-paper drop-shadow-[0_6px_14px_rgba(18,17,16,0.18)] md:-left-14 md:-top-14 md:w-36" />
           <div data-drift="4">
             <Reveal kind="unmask">
               <Photo photo={photos.lounge} className="aspect-[4/5] w-[82%] md:w-full" />
             </Reveal>
           </div>
-          <div data-drift="-10" className="absolute -bottom-12 right-0 w-[46%] md:-bottom-16 md:-right-5 md:w-[50%] lg:-right-16 lg:bottom-16 lg:w-[52%]">
+          <div data-drift="-10" className="absolute -bottom-12 right-0 w-[46%] md:-bottom-16 md:-right-5 md:w-[50%] lg:-bottom-12 lg:-right-16 lg:w-[52%]">
             <Reveal kind="unmask" delay={0.25}>
               <Photo
                 photo={photos.icedLatte}
@@ -70,9 +72,12 @@ export function About() {
             <h2 className="text-[clamp(2.4rem,5.4vw,4.25rem)] lowercase">Behind the blue door in Hlaliyeh</h2>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mt-7 max-w-[30rem] text-lg text-ink/75">
-              Milk is a coffee shop and concept store in Hlaliyeh, Saida. Come in for a coffee, stay for a sando, and
-              take whichever seat suits the day: a quiet corner by the patterned window, or a table out in the sun.
+            <p className="mt-7 max-w-[30rem] font-display text-[1.45rem] leading-snug text-ink md:text-[1.6rem]">
+              Milk is a coffee shop and concept store in Hlaliyeh, Saida.
+            </p>
+            <p className="mt-5 max-w-[30rem] text-lg text-ink/75">
+              Come in for a coffee, stay for a sando, and take whichever seat suits the day: a quiet corner by the
+              patterned window, or a table out in the sun.
             </p>
             <p className="mt-4 max-w-[30rem] text-lg text-ink/75">
               It is a relaxed, welcoming place, built for unhurried mornings and long catch-ups.

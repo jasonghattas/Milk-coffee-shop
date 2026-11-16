@@ -77,7 +77,7 @@ export function ExperienceProvider({ children }: { children: React.ReactNode }) 
     }
     setCanReplay(!prefersReducedMotion());
     if (wantsIntro) {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: "instant" });
       setMode("intro");
     } else {
       setMode("static");
@@ -93,7 +93,7 @@ export function ExperienceProvider({ children }: { children: React.ReactNode }) 
     window.setTimeout(() => {
       setLoaderOut(true);
       setStarted(true);
-    }, 350);
+    }, 180);
   }, []);
 
   const toStatic = useCallback(() => {
@@ -112,13 +112,18 @@ export function ExperienceProvider({ children }: { children: React.ReactNode }) 
   }, [mode, started, runId, toStatic]);
 
   const skip = useCallback(() => {
-    if (!started) toStatic();
-    else setSkipSignal((n) => n + 1);
-  }, [started, toStatic]);
+    if (!started) {
+      toStatic();
+      return;
+    }
+    // Let the page in immediately; the cup glides to its place behind it.
+    reveal();
+    setSkipSignal((n) => n + 1);
+  }, [started, toStatic, reveal]);
 
   const replay = useCallback(() => {
     if (!canReplay) return;
-    window.scrollTo({ top: 0, behavior: "auto" });
+    window.scrollTo({ top: 0, behavior: "instant" });
     document.documentElement.dataset.intro = "play";
     readyRef.current = false;
     setProgress(60);

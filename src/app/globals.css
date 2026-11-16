@@ -11,7 +11,7 @@
   --color-paper: #fffdf8;
   --color-door: #2b5d85;
   --color-door-deep: #1d4464;
-  --color-sign: #f7e21b;
+  --color-sign: #f6d743; /* butter yellow, after the glow of the shop sign */
   --color-oak: #c79a60;
   --color-roast: #3a2416;
 
@@ -147,6 +147,9 @@ html[data-intro="play"] .intro-hide {
   pointer-events: none;
   transition: none;
 }
+
+.hero-photo-img { transition: transform 2.2s var(--ease-out-soft); }
+html[data-intro="play"] .hero-photo-img { transform: scale(1.12); transition: none; }
 
 .intro-loader { display: none; }
 .btn.intro-skip { display: none; }

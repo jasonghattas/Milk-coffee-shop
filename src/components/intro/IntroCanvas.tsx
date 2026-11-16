@@ -59,6 +59,7 @@ const OPENING: Shot = {
 };
 
 const FOV = 35;
+const PACE = 1.28;
 const COFFEE = "#1c0f07";
 
 type Props = {
@@ -144,6 +145,8 @@ function Film({ play, started, skipSignal, lowPower, still, onReady, onReveal }:
       .addLabel("reveal", 10.4)
       .call(() => callbacks.current.onReveal(), [], 10.55)
       .to(shot, { place: 1, dist: FINAL.dist, camY: FINAL.camY, duration: 1.9, ease: "power3.inOut" }, 10.4);
+    // The film is cut to play briskly: about nine and a half seconds end to end.
+    tl.timeScale(PACE);
     timeline.current = tl;
     return () => {
       tl.kill();
@@ -163,7 +166,7 @@ function Film({ play, started, skipSignal, lowPower, still, onReady, onReveal }:
   useEffect(() => {
     const tl = timeline.current;
     if (!tl || skipSignal === 0) return;
-    if (tl.time() < tl.labels.reveal) tl.seek("reveal").play();
+    if (tl.time() < tl.labels.reveal) tl.seek("reveal").timeScale(2.4).play();
   }, [skipSignal]);
 
   // Tell the page the scene is drawn (two frames in, so shaders are compiled).
@@ -474,15 +477,15 @@ function Cup({ shot, still }: { shot: Shot; still: boolean }) {
     // Final placement: beside the headline on wide screens, below it on tall ones.
     const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(FOV / 2)) * FINAL.dist * fit;
     const wide = aspect >= 1;
-    const targetX = wide ? visibleHeight * aspect * 0.24 : 0;
-    const targetY = wide ? -0.05 : -visibleHeight * 0.27;
-    const targetScale = wide ? 1 : 0.92;
+    const targetX = wide ? visibleHeight * aspect * 0.075 : visibleHeight * aspect * 0.22;
+    const targetY = wide ? -visibleHeight * 0.13 : -visibleHeight * 0.3;
+    const targetScale = wide ? 0.86 : 0.8;
     const idle = still ? 0 : shot.place;
     group.current.position.set(targetX * shot.place, targetY * shot.place + Math.sin(t * 0.8) * 0.035 * idle, 0);
     group.current.rotation.y = Math.sin(t * 0.45) * 0.24 * idle;
     group.current.scale.setScalar(1 + (targetScale - 1) * shot.place);
 
-    (halo.current.material as THREE.MeshBasicMaterial).opacity = shot.glow * 0.8;
+    (halo.current.material as THREE.MeshBasicMaterial).opacity = shot.glow * (0.8 - 0.45 * shot.place);
     halo.current.rotation.y = -group.current.rotation.y;
   });
 
