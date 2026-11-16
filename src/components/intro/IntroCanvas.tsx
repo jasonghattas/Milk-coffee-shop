@@ -478,8 +478,8 @@ function Cup({ shot, still }: { shot: Shot; still: boolean }) {
     const visibleHeight = 2 * Math.tan(THREE.MathUtils.degToRad(FOV / 2)) * FINAL.dist * fit;
     const wide = aspect >= 1;
     const targetX = wide ? visibleHeight * aspect * 0.075 : visibleHeight * aspect * 0.22;
-    const targetY = wide ? -visibleHeight * 0.13 : -visibleHeight * 0.3;
-    const targetScale = wide ? 0.86 : 0.8;
+    const targetY = wide ? -visibleHeight * 0.17 : -visibleHeight * 0.33;
+    const targetScale = wide ? 0.6 : 0.56;
     const idle = still ? 0 : shot.place;
     group.current.position.set(targetX * shot.place, targetY * shot.place + Math.sin(t * 0.8) * 0.035 * idle, 0);
     group.current.rotation.y = Math.sin(t * 0.45) * 0.24 * idle;
