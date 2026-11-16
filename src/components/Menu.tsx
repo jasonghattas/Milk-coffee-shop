@@ -72,21 +72,25 @@ export function Menu() {
       <div className="shell">
         <Reveal>
           <div ref={panel} className="scroll-mt-20 rounded-[14px] bg-paper ring-1 ring-sign/40">
-            <header className="grid gap-6 px-5 pt-8 md:grid-cols-12 md:items-end md:px-10 md:pt-12">
+            <header className="grid gap-5 px-5 pt-9 md:grid-cols-12 md:items-end md:px-12 md:pt-14">
               <div className="md:col-span-7">
-                <h2 className="text-[clamp(2.4rem,5.4vw,4.25rem)] lowercase">The menu</h2>
+                <p className="flex items-center gap-3 text-sm uppercase tracking-[0.22em] text-ink/55">
+                  <span className="h-px w-8 bg-sign" aria-hidden />
+                  Made to order
+                </p>
+                <h2 className="mt-4 text-[clamp(2.6rem,6vw,4.75rem)] lowercase">The menu</h2>
               </div>
-              <p className="max-w-[24rem] text-ink/65 md:col-span-5 md:justify-self-end md:pb-2">
-                Coffee, sandos and salades, made to order. Prices are in US dollars.
+              <p className="max-w-[24rem] text-ink/65 md:col-span-5 md:justify-self-end md:pb-3">
+                Coffee, sandos and salades. Prices are in US dollars.
               </p>
             </header>
 
-            <div className="sticky top-16 z-20 mt-7 rounded-t-none border-b border-ink/10 bg-paper/95 px-5 py-3 backdrop-blur md:mt-9 md:px-10">
+            <div className="sticky top-16 z-20 mt-6 border-b border-ink/12 bg-paper/95 px-5 backdrop-blur md:mt-8 md:px-12">
               <div
                 role="tablist"
                 aria-label="Menu categories"
                 onKeyDown={onKeyDown}
-                className="grid w-full grid-cols-3 rounded-full bg-milk p-1 sm:inline-grid sm:w-auto"
+                className="flex gap-7 sm:gap-12"
               >
                 {tabs.map((tab) => {
                   const selected = tab.id === active.id;
@@ -103,21 +107,19 @@ export function Menu() {
                       aria-controls="menu-panel"
                       tabIndex={selected ? 0 : -1}
                       onClick={() => select(tab.id)}
-                      className={`relative min-h-[46px] rounded-full px-3 text-[0.98rem] lowercase transition-colors duration-300 sm:px-7 ${
-                        selected ? "text-milk" : "text-ink/65 hover:text-ink"
+                      className={`relative -mb-px min-h-[56px] pb-3 pt-4 font-display text-[1.45rem] lowercase transition-colors duration-300 sm:text-[1.8rem] ${
+                        selected ? "text-ink" : "text-ink/40 hover:text-ink/75"
                       }`}
                     >
+                      {tab.label}
+                      <sup className="ml-1 font-sans text-[0.42em] tabular-nums opacity-70">{tab.count}</sup>
                       {selected && (
                         <motion.span
                           layoutId="menu-tab"
-                          className="absolute inset-0 rounded-full bg-ink"
-                          transition={{ type: "spring", stiffness: 420, damping: 36 }}
+                          className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-sign"
+                          transition={{ type: "spring", stiffness: 420, damping: 38 }}
                         />
                       )}
-                      <span className="relative">
-                        {tab.label}
-                        <span className="ml-1.5 text-[0.8em] tabular-nums opacity-55">{tab.count}</span>
-                      </span>
                     </button>
                   );
                 })}
@@ -128,12 +130,12 @@ export function Menu() {
               id="menu-panel"
               role="tabpanel"
               aria-labelledby={`tab-${active.id}`}
-              className="min-h-[560px] px-5 pb-8 pt-8 md:px-10 md:pb-12 md:pt-10"
+              className="min-h-[560px] px-5 pb-9 pt-8 md:px-12 md:pb-14 md:pt-12"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={active.id}
-                  className="grid gap-8 lg:grid-cols-12 lg:gap-10"
+                  className="grid gap-9 lg:grid-cols-12 lg:gap-14"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
@@ -143,6 +145,7 @@ export function Menu() {
                     <div className="lg:sticky lg:top-40">
                       <Photo photo={active.photo} className="aspect-[16/10] sm:aspect-[21/9] lg:aspect-[4/5]" />
                       <p className="mt-5 font-display text-[1.45rem] lowercase leading-tight">{active.intro}</p>
+                      <p className="mt-2 text-sm text-ink/50">{active.photo.caption}</p>
                       {active.id === "coffee" && !drinksConfirmed && (
                         <p className="mt-4 border-l-2 border-sign pl-3 text-[0.92rem] text-ink/60">
                           Our drinks list is being finalised, so prices are not shown yet. Ask at the counter for

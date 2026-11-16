@@ -10,6 +10,11 @@ export type MenuItem = {
   /** Short label shown on the card: the bread for sandos, the dressing for salads. */
   tag?: string;
   /**
+   * Optional small label beside the name. Use it sparingly and only when it is
+   * true: "signature" for a house creation, "bestseller" for a proven favourite.
+   */
+  label?: "signature" | "bestseller";
+  /**
    * Optional photo of the dish, e.g. "/photos/menu/caprese.webp" (put the file
    * in /public/photos/menu). Cards crop every photo to the same 4:3 frame.
    */
@@ -123,6 +128,8 @@ export const foodMenu: MenuCategory[] = [
       },
       {
         name: "Milk's",
+        // The salad that carries the shop's own name.
+        label: "signature",
         tag: "gomma dressing",
         price: 10,
         description:
