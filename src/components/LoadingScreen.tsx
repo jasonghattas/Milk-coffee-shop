@@ -12,6 +12,8 @@ export function LoadingScreen() {
 
   // Count smoothly towards the real figure instead of jumping.
   useEffect(() => {
+    // Once the curtain is up there is nothing left to count: stop, and leave the film every frame.
+    if (loaderOut) return;
     let frame = 0;
     const tick = () => {
       setShown((value) => {
@@ -22,7 +24,7 @@ export function LoadingScreen() {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [loaderOut]);
 
   // Escape skips the intro, like the button.
   useEffect(() => {

@@ -84,7 +84,7 @@ export default function IntroCanvas(props: Props) {
   const { active, lowPower } = props;
   return (
     <Canvas
-      dpr={[1, lowPower ? 1.5 : 2]}
+      dpr={[1, lowPower ? 1.25 : 1.5]}
       camera={{ fov: FOV, near: 0.1, far: 60, position: [0, 0, 9] }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
       frameloop={active ? "always" : "never"}
@@ -131,7 +131,7 @@ function Film({ play, started, skipSignal, lowPower, still, onReady, onReveal }:
       .set(shot, { burst: 0 }, 3.6)
       .to(shot, { burst: 5, duration: 5, ease: "none" }, 3.6)
       .to(shot, { split: 1, duration: 2.8, ease: "expo.out" }, 3.6)
-      .to(shot, { dist: 5.3, duration: 1.4, ease: "power3.out" }, 3.6)
+      .to(shot, { dist: 5.3, duration: 0.9, ease: "power3.out" }, 3.6)
       // the pour, and the cup that rises out of it
       .to(shot, { head: 1, duration: 3.4, ease: "power1.inOut" }, 4.3)
       .to(shot, { beanOut: 1, duration: 1.9, ease: "power2.in" }, 4.9)
@@ -169,19 +169,42 @@ function Film({ play, started, skipSignal, lowPower, still, onReady, onReveal }:
     if (tl.time() < tl.labels.reveal) tl.seek("reveal").timeScale(2.4).play();
   }, [skipSignal]);
 
-  // Tell the page the scene is drawn (two frames in, so shaders are compiled).
+  // Before the curtain lifts, compile every shader the film will need, including
+  // those of objects that only appear later (the crumbs, the pour, the cup). Left
+  // to compile on first appearance they each freeze the picture for a moment.
   const invalidate = useThree((state) => state.invalidate);
+  const gl = useThree((state) => state.gl);
+  const scene = useThree((state) => state.scene);
+  const camera = useThree((state) => state.camera);
   useEffect(() => {
+    let cancelled = false;
     let frames = 0;
     let id = 0;
+    const finish = () => {
+      if (!cancelled) callbacks.current.onReady();
+    };
     const wait = () => {
+      if (cancelled) return;
       invalidate();
-      if (++frames >= 3) callbacks.current.onReady();
-      else id = requestAnimationFrame(wait);
+      // Three frames in, the lighting environment exists and can be compiled against.
+      if (++frames < 3) {
+        id = requestAnimationFrame(wait);
+        return;
+      }
+      const fallback = window.setTimeout(finish, 2500);
+      gl.compileAsync(scene, camera)
+        .catch(() => undefined)
+        .then(() => {
+          window.clearTimeout(fallback);
+          requestAnimationFrame(finish);
+        });
     };
     id = requestAnimationFrame(wait);
-    return () => cancelAnimationFrame(id);
-  }, [invalidate]);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(id);
+    };
+  }, [invalidate, gl, scene, camera]);
 
   return (
     <>
@@ -425,6 +448,7 @@ function Cup({ shot, still }: { shot: Shot; still: boolean }) {
   const { aspect, fit } = useFit();
 
   const logo = useLoader(THREE.TextureLoader, "/brand/logo-black.png");
+  const gl = useThree((state) => state.gl);
   const clip = useMemo(() => new THREE.Plane(new THREE.Vector3(0, -1, 0), -2), []);
   const assets = useMemo(() => {
     const wrap = cupWrapTexture(logo.image as HTMLImageElement);
@@ -440,6 +464,12 @@ function Cup({ shot, still }: { shot: Shot; still: boolean }) {
       liquid: new THREE.MeshPhysicalMaterial({ color: COFFEE, roughness: 0.05, clearcoat: 1, envMapIntensity: 1.8 }),
     };
   }, [logo, clip]);
+
+  // Send the cup's print and halo to the graphics card now, not when the cup first shows.
+  useEffect(() => {
+    gl.initTexture(assets.wrap);
+    gl.initTexture(assets.halo);
+  }, [gl, assets]);
 
   useEffect(
     () => () => {
@@ -462,7 +492,7 @@ function Cup({ shot, still }: { shot: Shot; still: boolean }) {
     ring.current.visible = forming;
     if (forming) {
       const r = cupRadiusAt(level) + 0.015;
-      const swell = 0.4 + 0.6 * Math.sin(rise * Math.PI);
+      const swell = Math.sin(rise * Math.PI);
       ring.current.position.y = level;
       ring.current.scale.set(r, r, swell);
     }
