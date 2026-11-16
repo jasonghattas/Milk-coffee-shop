@@ -7,7 +7,6 @@ import { Menu } from "@/components/Menu";
 import { PaperBand } from "@/components/PaperBand";
 import { MotionRoot } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
-import { Reviews } from "@/components/Reviews";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 
@@ -29,7 +28,6 @@ export default function Home() {
           <About />
           <Menu />
           <Gallery />
-          <Reviews />
           <Contact />
         </MotionRoot>
       </main>

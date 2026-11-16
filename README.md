@@ -60,7 +60,7 @@ All text that changes lives in `src/data`. No design code needs touching.
 src/app                 page shell, fonts, colours (globals.css), SEO
 src/components          one file per section: Navbar, Hero, PaperBand, About,
                         Menu (tabs; DrinksMenu and FoodMenu are its panels),
-                        Gallery, Reviews, Contact, Footer; Reveal.tsx holds
+                        Gallery, Contact, Footer; Reveal.tsx holds
                         the scroll animations
 src/components/intro    the 3D film: IntroCanvas.tsx (scene and timeline),
                         geometry.ts (bean, cup, pour shapes)
