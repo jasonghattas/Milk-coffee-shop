@@ -4,7 +4,15 @@
  * `width` and `height` are the file's pixel size (they prevent layout jumps).
  */
 
-export type Photo = { src: string; alt: string; caption: string; width: number; height: number };
+export type Photo = {
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+  /** Which part of the photo to keep in view when it is cropped (CSS object-position). */
+  focus?: string;
+};
 
 export const photos = {
   storefront: {
@@ -21,12 +29,29 @@ export const photos = {
     width: 592,
     height: 782,
   },
-  icedLatte: {
-    src: "/photos/iced-latte.webp",
-    alt: "An iced latte in a Milk cup on a wooden table, with daisies painted on the paving",
-    caption: "Iced latte on the terrace",
-    width: 645,
-    height: 600,
+  latteSun: {
+    src: "/photos/latte-sun.webp",
+    alt: "An iced latte in a Milk cup on a wooden table, lit by low sun, shelves behind",
+    caption: "Iced latte, morning light",
+    width: 768,
+    height: 1365,
+    focus: "50% 82%",
+  },
+  latteCake: {
+    src: "/photos/latte-cake.webp",
+    alt: "An iced latte in a Milk cup beside a slice of layered cake dusted with cocoa",
+    caption: "Iced latte and a slice of cake",
+    width: 1289,
+    height: 708,
+    focus: "72% 50%",
+  },
+  bags: {
+    src: "/photos/bags.webp",
+    alt: "Brown paper takeaway bags printed and stickered with the Milk wordmark",
+    caption: "Packed to go",
+    width: 670,
+    height: 794,
+    focus: "50% 40%",
   },
   terrace: {
     src: "/photos/terrace.webp",
@@ -53,8 +78,8 @@ export const photos = {
 
 export const gallery: Photo[] = [
   photos.storefront,
-  photos.icedLatte,
-  photos.lounge,
+  photos.latteCake,
+  photos.bags,
   photos.sando,
   photos.terrace,
   photos.interior,

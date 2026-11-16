@@ -58,7 +58,7 @@ export function About() {
           <div data-drift="-10" className="absolute -bottom-12 right-0 w-[46%] md:-bottom-16 md:-right-5 md:w-[50%] lg:-bottom-12 lg:-right-16 lg:w-[52%]">
             <Reveal kind="unmask" delay={0.25}>
               <Photo
-                photo={photos.icedLatte}
+                photo={photos.latteCake}
                 className="aspect-square shadow-[0_24px_60px_-20px_rgba(18,17,16,0.45)] ring-[5px] ring-milk"
               />
             </Reveal>

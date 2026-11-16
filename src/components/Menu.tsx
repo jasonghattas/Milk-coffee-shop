@@ -28,7 +28,7 @@ const tabs: Tab[] = [
     label: "Coffee",
     count: drinksMenu.reduce((total, group) => total + group.items.length, 0),
     intro: "Espresso classics, iced signatures and a few things for the non-coffee crowd.",
-    photo: photos.icedLatte,
+    photo: photos.latteSun,
   },
   ...foodMenu.map((category) => ({
     id: category.id,

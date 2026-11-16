@@ -22,6 +22,7 @@ export function Photo({
         loading={eager ? "eager" : "lazy"}
         decoding="async"
         className={`h-full w-full object-cover ${imgClassName}`}
+        style={photo.focus ? { objectPosition: photo.focus } : undefined}
       />
     </div>
   );
