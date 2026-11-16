@@ -2,15 +2,13 @@
 
 /*
  * Design tokens. Colours come from the shop itself:
- * the black wordmark, the yellow backlight of the sign, the blue-painted
- * shopfront, the oak furniture and the white of, well, milk.
+ * the black wordmark, the yellow backlight of the sign,
+ * the oak furniture and the white of, well, milk.
  */
 @theme {
   --color-ink: #121110;
   --color-milk: #f4f1e8;
   --color-paper: #fffdf8;
-  --color-door: #2b5d85;
-  --color-door-deep: #1d4464;
   --color-sign: #f6d743; /* butter yellow, after the glow of the shop sign */
   --color-oak: #c79a60;
   --color-roast: #3a2416;

@@ -2,7 +2,6 @@
 
 import { useRef, useState, type KeyboardEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Daisy } from "./Daisy";
 import { DrinksMenu } from "./DrinksMenu";
 import { FoodMenu } from "./FoodMenu";
 import { Photo } from "./Photo";
@@ -68,13 +67,11 @@ export function Menu() {
   const category = foodMenu.find((item) => item.id === active.id);
 
   return (
-    <section id="menu" className="relative isolate overflow-clip bg-door py-20 md:py-28">
-      <Daisy className="pointer-events-none absolute -left-16 top-10 -z-10 w-56 rotate-12 text-milk/90 md:-left-10 md:w-72" />
-      <Daisy className="pointer-events-none absolute -right-20 bottom-24 -z-10 w-64 -rotate-12 text-milk/90 md:w-96" />
+    <section id="menu" className="bg-ink py-20 md:py-28">
 
       <div className="shell">
         <Reveal>
-          <div ref={panel} className="scroll-mt-20 rounded-[14px] bg-paper shadow-[0_40px_90px_-40px_rgba(9,24,38,0.65)]">
+          <div ref={panel} className="scroll-mt-20 rounded-[14px] bg-paper ring-1 ring-sign/40">
             <header className="grid gap-6 px-5 pt-8 md:grid-cols-12 md:items-end md:px-10 md:pt-12">
               <div className="md:col-span-7">
                 <h2 className="text-[clamp(2.4rem,5.4vw,4.25rem)] lowercase">The menu</h2>

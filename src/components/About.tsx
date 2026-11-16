@@ -5,7 +5,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Photo } from "./Photo";
 import { Reveal } from "./Reveal";
-import { Daisy } from "./Daisy";
 import { photos } from "@/data/gallery";
 
 const notes = [
@@ -51,7 +50,6 @@ export function About() {
     <section ref={root} id="about" className="overflow-hidden bg-milk pb-28 pt-20 md:pb-40 md:pt-32">
       <div className="shell grid gap-20 md:grid-cols-12 md:gap-8">
         <div className="relative md:col-span-6 md:self-start lg:col-span-5">
-          <Daisy className="pointer-events-none absolute -left-10 -top-12 z-10 w-28 -rotate-12 text-paper drop-shadow-[0_6px_14px_rgba(18,17,16,0.18)] md:-left-14 md:-top-14 md:w-36" />
           <div data-drift="4">
             <Reveal kind="unmask">
               <Photo photo={photos.lounge} className="aspect-[4/5] w-[82%] md:w-full" />

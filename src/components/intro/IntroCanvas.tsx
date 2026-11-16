@@ -222,9 +222,9 @@ function Lighting() {
     <>
       <ambientLight intensity={0.22} />
       <directionalLight position={[3, 4, 5]} intensity={2.4} color="#fff1dc" />
-      {/* Rim light in the yellow of the shop sign; fill in the blue of its door. */}
+      {/* Rim light in the yellow of the shop sign; a soft warm fill from the other side. */}
       <spotLight position={[-4, 3, -5]} intensity={160} angle={0.7} penumbra={1} color="#f7e21b" />
-      <pointLight position={[-5, -1, 3]} intensity={36} color="#3f7fb0" />
+      <pointLight position={[-5, -1, 3]} intensity={30} color="#ffe9c9" />
       <Environment resolution={256} frames={1}>
         <Lightformer form="rect" intensity={3.2} position={[0, 5, -1]} rotation-x={Math.PI / 2} scale={[9, 2.2, 1]} />
         <Lightformer form="rect" intensity={2.2} position={[-6, 1, 2]} rotation-y={Math.PI / 2} scale={[7, 1.2, 1]} />
