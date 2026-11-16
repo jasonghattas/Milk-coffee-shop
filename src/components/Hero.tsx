@@ -49,7 +49,7 @@ export function Hero() {
             width={photos.storefront.width}
             height={photos.storefront.height}
             decoding="async"
-            className="hero-photo-img h-full w-full object-cover object-[50%_30%]"
+            className="hero-photo-img h-full w-full object-cover object-[50%_12%] md:object-[50%_30%]"
           />
         </div>
         <figcaption className="absolute -bottom-7 right-0 hidden text-sm text-milk/50 md:landscape:block">
