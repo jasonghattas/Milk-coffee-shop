@@ -9,12 +9,12 @@ const variants: Record<"rise" | "unmask", Variants> = {
   // Text and blocks: a short, soft lift.
   rise: {
     hidden: { opacity: 0, y: 22 },
-    shown: { opacity: 1, y: 0, transition: { duration: 0.8, ease } },
+    shown: (delay: number = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.8, ease, delay } }),
   },
   // Photos: uncovered from the top, like a blind going up.
   unmask: {
     hidden: { clipPath: "inset(0% 0% 100% 0%)" },
-    shown: { clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 1.1, ease } },
+    shown: (delay: number = 0) => ({ clipPath: "inset(0% 0% 0% 0%)", transition: { duration: 1.1, ease, delay } }),
   },
 };
 
@@ -37,7 +37,8 @@ export function Reveal({
       initial="hidden"
       whileInView="shown"
       viewport={{ once: true, margin: "0px 0px -12% 0px" }}
-      transition={{ delay }}
+      // The variant carries its own transition, so the delay has to be merged into it.
+      custom={delay}
     >
       {children}
     </motion.div>

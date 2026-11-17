@@ -4,7 +4,8 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { About } from "@/components/About";
 import { Menu } from "@/components/Menu";
-import { PaperBand } from "@/components/PaperBand";
+import { Tapes } from "@/components/Tapes";
+import { ScrollSetup } from "@/components/ScrollSetup";
 import { MotionRoot } from "@/components/Reveal";
 import { Gallery } from "@/components/Gallery";
 import { Contact } from "@/components/Contact";
@@ -19,12 +20,13 @@ export default function Home() {
       >
         Skip to content
       </a>
+      <ScrollSetup />
       <LoadingScreen />
       <Navbar />
       <main>
         <Hero />
         <MotionRoot>
-          <PaperBand />
+          <Tapes />
           <About />
           <Menu />
           <Gallery />

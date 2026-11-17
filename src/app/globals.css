@@ -110,10 +110,62 @@
     border-color: color-mix(in srgb, var(--color-ink) 28%, transparent);
   }
 
-  /* The strip of wrapping paper under the hero drifts slowly sideways. */
-  .paper-band-track { animation: paper-drift 60s linear infinite; }
-  @keyframes paper-drift {
-    to { transform: translateX(-50%); }
+  /* Drink cards lean toward the pointer (values set from DrinksMenu). */
+  .drink-card {
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+  }
+
+  /* The round sticker beside the About photos turns slowly on its own. */
+  .badge-spin { animation: badge-spin 26s linear infinite; }
+  @keyframes badge-spin { to { transform: rotate(360deg); } }
+
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(6px); }
+  }
+
+  /*
+   * The backlit sign in the footer. A blurred yellow copy of the wordmark
+   * sits behind the dark letters; switched on, it flickers like a tube
+   * warming up, then hums softly. The wall around it catches the light.
+   */
+  .sign-wall {
+    background:
+      radial-gradient(ellipse 80% 120% at 50% 50%, #1b1916, #121110 70%);
+  }
+  .sign-halo {
+    filter: blur(clamp(10px, 2vw, 28px));
+    transform: scale(1.02);
+    opacity: 0;
+    will-change: opacity;
+  }
+  .sign-spill {
+    background: radial-gradient(ellipse 55% 60% at 50% 50%, rgba(246, 215, 67, 0.18), transparent 70%);
+    opacity: 0;
+    will-change: opacity;
+  }
+  .sign-rim { transition: filter 0.6s ease 1.2s; }
+  .is-on .sign-halo { animation: sign-on 1.7s linear forwards, sign-hum 6s ease-in-out 1.7s infinite; }
+  .is-on .sign-spill { animation: sign-on 1.7s linear forwards; }
+  .is-on .sign-rim {
+    filter: drop-shadow(0 0 1px rgba(246, 215, 67, 0.95)) drop-shadow(0 0 6px rgba(246, 215, 67, 0.45));
+  }
+  @keyframes sign-on {
+    0% { opacity: 0; }
+    6% { opacity: 0.85; }
+    9% { opacity: 0.05; }
+    16% { opacity: 0.95; }
+    20% { opacity: 0.2; }
+    27% { opacity: 1; }
+    31% { opacity: 0.45; }
+    40%, 100% { opacity: 1; }
+  }
+  @keyframes sign-hum {
+    0%, 100% { opacity: 1; }
+    48% { opacity: 0.86; }
+    50% { opacity: 0.97; }
+    53% { opacity: 0.88; }
   }
 
   /* Cross-stitch band, after the pattern on the shop's front window. */
@@ -149,6 +201,8 @@ html[data-intro="play"] .intro-hide {
 .hero-photo-img { transition: transform 2.2s var(--ease-out-soft); }
 html[data-intro="play"] .hero-photo-img { transform: scale(1.12); transition: none; }
 
+html[data-intro="play"] .scroll-progress { opacity: 0; }
+
 .intro-loader { display: none; }
 .btn.intro-skip { display: none; }
 html[data-intro="play"] .btn.intro-skip { display: inline-flex; }
@@ -161,7 +215,7 @@ html[data-intro="play"] .intro-loader { display: flex; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .paper-band-track { animation: none; }
+  .badge-spin { animation: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;

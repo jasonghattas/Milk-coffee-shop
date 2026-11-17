@@ -125,7 +125,7 @@ export function Hero() {
 }
 
 /** If the 3D scene throws, fall back to the flat hero instead of breaking the page. */
-class SceneBoundary extends Component<{ onError: () => void; children: ReactNode }, { failed: boolean }> {
+export class SceneBoundary extends Component<{ onError: () => void; children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };

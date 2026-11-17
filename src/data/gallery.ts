@@ -76,11 +76,14 @@ export const photos = {
   },
 } satisfies Record<string, Photo>;
 
+/** The gallery, in the order it scrolls past. */
 export const gallery: Photo[] = [
   photos.storefront,
-  photos.latteCake,
-  photos.bags,
+  photos.latteSun,
   photos.sando,
+  photos.lounge,
   photos.terrace,
+  photos.bags,
   photos.interior,
+  photos.latteCake,
 ];
