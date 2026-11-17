@@ -5,6 +5,7 @@ import { ArrowDownRight, MapPin } from "lucide-react";
 import { Photo } from "./Photo";
 import { photos, type Photo as PhotoData } from "@/data/gallery";
 import { foodMenu } from "@/data/menu";
+import { drinksMenu } from "@/data/drinks";
 import { site } from "@/data/site";
 import { gsap, reducedMotion } from "@/lib/motion";
 
@@ -33,9 +34,11 @@ const manifesto: Token[] = [
 
 const plain = manifesto.map((t) => ("word" in t ? t.word : "")).filter(Boolean).join(" ");
 
+const coffees = drinksMenu.reduce((total, group) => total + group.items.length, 0);
 const sandos = foodMenu.find((c) => c.id === "food")?.items.length ?? 0;
 const salades = foodMenu.find((c) => c.id === "salades")?.items.length ?? 0;
 const stats = [
+  { value: coffees, decimals: 0, label: "coffees and drinks", suffix: "" },
   { value: sandos, decimals: 0, label: "sandos on the menu", suffix: "" },
   { value: salades, decimals: 0, label: "big salades", suffix: "" },
 ];
@@ -180,7 +183,7 @@ export function About() {
             catch-ups.
           </p>
 
-          <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 border-t border-ink/15 pt-8">
+          <dl className="mt-10 grid grid-cols-3 gap-x-4 gap-y-8 border-t border-ink/15 pt-8">
             {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="sr-only">{stat.label}</dt>
