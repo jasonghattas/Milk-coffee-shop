@@ -169,9 +169,9 @@ function Film({ play, started, skipSignal, lowPower, still, onReady, onReveal }:
     if (tl.time() < tl.labels.reveal) tl.seek("reveal").timeScale(2.4).play();
   }, [skipSignal]);
 
-  // Before the curtain lifts, compile every shader the film will need, including
+  // Before the curtain lifts, build every shader the film will need, including
   // those of objects that only appear later (the crumbs, the pour, the cup). Left
-  // to compile on first appearance they each freeze the picture for a moment.
+  // to build on first appearance they each freeze the picture for a moment.
   const invalidate = useThree((state) => state.invalidate);
   const gl = useThree((state) => state.gl);
   const scene = useThree((state) => state.scene);
@@ -191,13 +191,34 @@ function Film({ play, started, skipSignal, lowPower, still, onReady, onReveal }:
         id = requestAnimationFrame(wait);
         return;
       }
-      const fallback = window.setTimeout(finish, 2500);
-      gl.compileAsync(scene, camera)
-        .catch(() => undefined)
-        .then(() => {
-          window.clearTimeout(fallback);
-          requestAnimationFrame(finish);
-        });
+      // Draw one real frame with every object switched on. Only a real draw builds
+      // the exact shaders used later (the cup's, in particular, depend on the plane
+      // that reveals it), so nothing is left to build when the cup first appears.
+      // The loading screen covers the canvas while this happens.
+      const restore: Array<[THREE.Object3D, boolean, boolean]> = [];
+      scene.traverse((object) => {
+        restore.push([object, object.visible, object.frustumCulled]);
+        object.visible = true;
+        object.frustumCulled = false;
+      });
+      try {
+        gl.render(scene, camera);
+      } catch {
+        /* a failed warm-up only means the old behaviour: shaders build on first use */
+      }
+      for (const [object, visible, culled] of restore) {
+        object.visible = visible;
+        object.frustumCulled = culled;
+      }
+      // Two more frames so the canvas shows the true opening picture before the curtain lifts.
+      let settle = 0;
+      const done = () => {
+        if (cancelled) return;
+        invalidate();
+        if (++settle >= 2) finish();
+        else id = requestAnimationFrame(done);
+      };
+      id = requestAnimationFrame(done);
     };
     id = requestAnimationFrame(wait);
     return () => {
