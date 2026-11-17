@@ -5,7 +5,7 @@ import { ArrowDownRight, MapPin } from "lucide-react";
 import { Photo } from "./Photo";
 import { photos, type Photo as PhotoData } from "@/data/gallery";
 import { foodMenu } from "@/data/menu";
-import { rating, site } from "@/data/site";
+import { site } from "@/data/site";
 import { gsap, reducedMotion } from "@/lib/motion";
 
 /**
@@ -36,8 +36,6 @@ const plain = manifesto.map((t) => ("word" in t ? t.word : "")).filter(Boolean).
 const sandos = foodMenu.find((c) => c.id === "food")?.items.length ?? 0;
 const salades = foodMenu.find((c) => c.id === "salades")?.items.length ?? 0;
 const stats = [
-  { value: rating.score, decimals: 1, label: "on Google", suffix: "★" },
-  { value: rating.count, decimals: 0, label: "reviews and counting", suffix: "+" },
   { value: sandos, decimals: 0, label: "sandos on the menu", suffix: "" },
   { value: salades, decimals: 0, label: "big salades", suffix: "" },
 ];
